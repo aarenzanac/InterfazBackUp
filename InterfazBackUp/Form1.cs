@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,8 @@ namespace InterfazBackUp
     public partial class Form1 : Form
     {
         String path = @"C:\Users\aaren\OneDrive";
+        ArrayList seleccionArchivosCopia = new ArrayList();
+        ArrayList seleccionPathsCopia = new ArrayList();
         public Form1()
         {
             InitializeComponent();
@@ -51,9 +54,25 @@ namespace InterfazBackUp
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (treeView1.Nodes.Count != 0) {
-                MessageBox.Show(e.Node.Text);
-              
-                
+                MessageBox.Show(e.Node.Text + "Añadido");
+                if (e.Node.Tag == "file")
+                {
+                    FileStream fileStream = File.Create(e.Node.FullPath);
+                    FileStream fs = fileStream;
+                    seleccionArchivosCopia.Add(fs);
+
+                    String path = e.Node.FullPath;
+                    seleccionPathsCopia.Add(path);
+                }
+                else {
+                    /*var directoryNode = new TreeNode(directoryInfo.Name);
+                    foreach (var directory in directoryInfo.GetDirectories())
+                        directoryNode.Nodes.Add(CreateDirectoryNode(directory));
+                    foreach (var file in directoryInfo.GetFiles())
+                        seleccionArchivosCopia.Add(file);
+                    seleccionPathsCopia.Add(File.ReadAllText(path));*/
+                }
+
             }
         }
 
@@ -70,9 +89,19 @@ namespace InterfazBackUp
             
             var directoryNode = new TreeNode(directoryInfo.Name);
             foreach (var directory in directoryInfo.GetDirectories())
+            {
+                directoryNode.Tag = "dir";
                 directoryNode.Nodes.Add(CreateDirectoryNode(directory));
-            foreach (var file in directoryInfo.GetFiles())
-                directoryNode.Nodes.Add(new TreeNode(file.Name));
+                
+                
+            }
+            foreach (var file in directoryInfo.GetFiles()) {
+                TreeNode archivo = new TreeNode(file.Name);
+                archivo.Tag = "file";
+                directoryNode.Nodes.Add(archivo);
+
+            }
+                
             return directoryNode;
         }
     }

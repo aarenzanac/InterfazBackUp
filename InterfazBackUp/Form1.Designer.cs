@@ -32,10 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.listViewSeleccion = new System.Windows.Forms.ListView();
             this.buttonExpandir = new System.Windows.Forms.Button();
             this.buttonContraer = new System.Windows.Forms.Button();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -60,15 +60,22 @@
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
             // 
-            // listView1
+            // imageList1
             // 
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(245, 42);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(425, 367);
-            this.listView1.TabIndex = 2;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "documents_folder.ico");
+            this.imageList1.Images.SetKeyName(1, "fileinterfaces.ico");
+            // 
+            // listViewSeleccion
+            // 
+            this.listViewSeleccion.HideSelection = false;
+            this.listViewSeleccion.Location = new System.Drawing.Point(245, 42);
+            this.listViewSeleccion.Name = "listViewSeleccion";
+            this.listViewSeleccion.Size = new System.Drawing.Size(425, 367);
+            this.listViewSeleccion.TabIndex = 2;
+            this.listViewSeleccion.UseCompatibleStateImageBehavior = false;
+            this.listViewSeleccion.View = System.Windows.Forms.View.Details;
             // 
             // buttonExpandir
             // 
@@ -90,13 +97,6 @@
             this.buttonContraer.UseVisualStyleBackColor = true;
             this.buttonContraer.Click += new System.EventHandler(this.buttonContraer_Click);
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "documents_folder.ico");
-            this.imageList1.Images.SetKeyName(1, "fileinterfaces.ico");
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -104,7 +104,7 @@
             this.ClientSize = new System.Drawing.Size(844, 487);
             this.Controls.Add(this.buttonContraer);
             this.Controls.Add(this.buttonExpandir);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.listViewSeleccion);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -119,7 +119,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TreeView treeView1;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView listViewSeleccion;
         private System.Windows.Forms.Button buttonExpandir;
         private System.Windows.Forms.Button buttonContraer;
         private System.Windows.Forms.ImageList imageList1;
