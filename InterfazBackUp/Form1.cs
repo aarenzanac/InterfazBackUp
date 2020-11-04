@@ -14,7 +14,8 @@ namespace InterfazBackUp
 {
     public partial class Form1 : Form
     {
-        String path = @"D:\Programas\";
+        //String path = @"D:\Programas\";
+        String path = @"C:\Facturae-3.4";
         ArrayList seleccionArchivosCopia = new ArrayList();
         ArrayList seleccionPathsCopia = new ArrayList();
         public Form1()
@@ -57,7 +58,7 @@ namespace InterfazBackUp
                 
                 if (e.Node.Tag == "file")
                 {
-                    FileStream fileStream = File.Create(@"D:\" + e.Node.FullPath);
+                    FileStream fileStream = File.Create(@"C:\" + e.Node.FullPath);
                     FileStream fs = fileStream;
                     seleccionArchivosCopia.Add(fs);
                     
@@ -65,7 +66,7 @@ namespace InterfazBackUp
                     seleccionPathsCopia.Add(pathArchivo);
 
                     ListViewItem archivoAñadir = new ListViewItem(e.Node.Text);
-                    archivoAñadir.SubItems.Add(pathArchivo);
+                    archivoAñadir.SubItems.Add(@"C:\" + pathArchivo);
                     listViewSeleccion.Items.Add(archivoAñadir);
                     MessageBox.Show(e.Node.Text + "Añadido");
 
