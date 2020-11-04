@@ -14,7 +14,7 @@ namespace InterfazBackUp
 {
     public partial class Form1 : Form
     {
-        String path = @"C:\Users\aaren\OneDrive";
+        String path = @"D:\Programas\";
         ArrayList seleccionArchivosCopia = new ArrayList();
         ArrayList seleccionPathsCopia = new ArrayList();
         public Form1()
@@ -54,15 +54,21 @@ namespace InterfazBackUp
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (treeView1.Nodes.Count != 0) {
-                MessageBox.Show(e.Node.Text + "Añadido");
+                
                 if (e.Node.Tag == "file")
                 {
-                    FileStream fileStream = File.Create(e.Node.FullPath);
+                    FileStream fileStream = File.Create(@"D:\" + e.Node.FullPath);
                     FileStream fs = fileStream;
                     seleccionArchivosCopia.Add(fs);
+                    
+                    String pathArchivo = e.Node.FullPath;
+                    seleccionPathsCopia.Add(pathArchivo);
 
-                    String path = e.Node.FullPath;
-                    seleccionPathsCopia.Add(path);
+                    ListViewItem archivoAñadir = new ListViewItem(e.Node.Text);
+                    archivoAñadir.SubItems.Add(pathArchivo);
+                    listViewSeleccion.Items.Add(archivoAñadir);
+                    MessageBox.Show(e.Node.Text + "Añadido");
+
                 }
                 else {
                     /*var directoryNode = new TreeNode(directoryInfo.Name);
