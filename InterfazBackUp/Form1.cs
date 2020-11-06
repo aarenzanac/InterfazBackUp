@@ -14,10 +14,10 @@ namespace InterfazBackUp
 {
     public partial class Form1 : Form
     {
-        //String path = @"D:\Programas\";
-        String path = @"C:\Facturae-3.4";
-        ArrayList seleccionArchivosCopia = new ArrayList();
-        ArrayList seleccionPathsCopia = new ArrayList();
+        String path = @"D:\Programas\";
+        //String path = @"C:\Facturae-3.4";
+        static ArrayList seleccionArchivosCopia = new ArrayList();
+        static ArrayList seleccionPathsCopia = new ArrayList();
         public Form1()
         {
             InitializeComponent();
@@ -54,11 +54,12 @@ namespace InterfazBackUp
 
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            listViewSeleccion.SmallImageList = imageList1;
             if (treeView1.Nodes.Count != 0) {
                 
                 if (e.Node.Tag == "file")
                 {
-                    FileStream fileStream = File.Create(@"C:\" + e.Node.FullPath);
+                    FileStream fileStream = File.Create(@"D:\" + e.Node.FullPath);
                     FileStream fs = fileStream;
                     seleccionArchivosCopia.Add(fs);
                     
@@ -66,18 +67,15 @@ namespace InterfazBackUp
                     seleccionPathsCopia.Add(pathArchivo);
 
                     ListViewItem archivoAñadir = new ListViewItem(e.Node.Text);
-                    archivoAñadir.SubItems.Add(@"C:\" + pathArchivo);
+                    //e.Node.ImageIndex = 1;
+                    archivoAñadir.SubItems.Add(@"D:\" + pathArchivo);
                     listViewSeleccion.Items.Add(archivoAñadir);
                     MessageBox.Show(e.Node.Text + "Añadido");
 
                 }
                 else {
-                    /*var directoryNode = new TreeNode(directoryInfo.Name);
-                    foreach (var directory in directoryInfo.GetDirectories())
-                        directoryNode.Nodes.Add(CreateDirectoryNode(directory));
-                    foreach (var file in directoryInfo.GetFiles())
-                        seleccionArchivosCopia.Add(file);
-                    seleccionPathsCopia.Add(File.ReadAllText(path));*/
+                    CreateDirectoryNodeSeleccion(@"D:\" + e.Node.FullPath);
+
                 }
 
             }
@@ -93,22 +91,48 @@ namespace InterfazBackUp
 
         private static TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
         {
-            
             var directoryNode = new TreeNode(directoryInfo.Name);
             foreach (var directory in directoryInfo.GetDirectories())
-            {
+            {   
                 directoryNode.Tag = "dir";
-                directoryNode.Nodes.Add(CreateDirectoryNode(directory));
-                
-                
+                directoryNode.ImageIndex = 0;
+                directoryNode.Nodes.Add(CreateDirectoryNode(directory));             
             }
             foreach (var file in directoryInfo.GetFiles()) {
                 TreeNode archivo = new TreeNode(file.Name);
                 archivo.Tag = "file";
+                archivo.ImageIndex = 1;
                 directoryNode.Nodes.Add(archivo);
-
             }
                 
+            return directoryNode;
+        }
+
+
+        private TreeNode CreateDirectoryNodeSeleccion(String path)
+        {
+            var directoryInfo = new DirectoryInfo(path);
+            listViewSeleccion.SmallImageList = imageList1;
+            var directoryNode = new TreeNode(directoryInfo.Name);
+            foreach (var directory in directoryInfo.GetDirectories())
+            {
+                directoryNode.Tag = "dir";
+                directoryNode.Nodes.Add(CreateDirectoryNodeSeleccion(directory.FullName));
+            }
+            foreach (var file in directoryInfo.GetFiles())
+            {
+                FileStream fileStream = File.Create(file.DirectoryName);
+                FileStream fs = fileStream;
+                seleccionArchivosCopia.Add(fs);
+
+                String pathArchivo = file.DirectoryName;
+                seleccionPathsCopia.Add(pathArchivo);
+
+                ListViewItem archivoAñadir = new ListViewItem(fs.Name);
+                archivoAñadir.SubItems.Add(@"D:\" + pathArchivo);
+                listViewSeleccion.Items.Add(archivoAñadir);
+                //MessageBox.Show(e.Node.Text + "Añadido");
+            }
             return directoryNode;
         }
     }

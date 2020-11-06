@@ -34,10 +34,10 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.listViewSeleccion = new System.Windows.Forms.ListView();
-            this.buttonExpandir = new System.Windows.Forms.Button();
-            this.buttonContraer = new System.Windows.Forms.Button();
             this.Nombre = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Ruta = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.buttonExpandir = new System.Windows.Forms.Button();
+            this.buttonContraer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -77,11 +77,22 @@
             this.listViewSeleccion.HideSelection = false;
             this.listViewSeleccion.Location = new System.Drawing.Point(245, 42);
             this.listViewSeleccion.Name = "listViewSeleccion";
-            this.listViewSeleccion.Size = new System.Drawing.Size(422, 367);
+            this.listViewSeleccion.Size = new System.Drawing.Size(587, 367);
             this.listViewSeleccion.SmallImageList = this.imageList1;
             this.listViewSeleccion.TabIndex = 2;
             this.listViewSeleccion.UseCompatibleStateImageBehavior = false;
             this.listViewSeleccion.View = System.Windows.Forms.View.Details;
+            // 
+            // Nombre
+            // 
+            this.Nombre.Tag = "";
+            this.Nombre.Text = "Nombre";
+            this.Nombre.Width = 104;
+            // 
+            // Ruta
+            // 
+            this.Ruta.Text = "Ruta";
+            this.Ruta.Width = 258;
             // 
             // buttonExpandir
             // 
@@ -102,17 +113,6 @@
             this.buttonContraer.Text = "Contraer Todo";
             this.buttonContraer.UseVisualStyleBackColor = true;
             this.buttonContraer.Click += new System.EventHandler(this.buttonContraer_Click);
-            // 
-            // Nombre
-            // 
-            this.Nombre.Tag = "";
-            this.Nombre.Text = "Nombre";
-            this.Nombre.Width = 159;
-            // 
-            // Ruta
-            // 
-            this.Ruta.Text = "Ruta";
-            this.Ruta.Width = 258;
             // 
             // Form1
             // 
@@ -139,9 +139,9 @@
         private System.Windows.Forms.ListView listViewSeleccion;
         private System.Windows.Forms.Button buttonExpandir;
         private System.Windows.Forms.Button buttonContraer;
-        private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ColumnHeader Nombre;
         private System.Windows.Forms.ColumnHeader Ruta;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
 
