@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +15,8 @@ namespace InterfazBackUp
 {
     public partial class Form1 : Form
     {
+        
+
         String path = @"D:\Programas\";
         //String path = @"C:\Facturae-3.4";
         static ArrayList seleccionArchivosCopia = new ArrayList();
@@ -134,6 +137,15 @@ namespace InterfazBackUp
                 //MessageBox.Show(e.Node.Text + "Añadido");
             }
             return directoryNode;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var selectorRuta = new FolderBrowserDialog();
+            if (selectorRuta.ShowDialog() == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(selectorRuta.SelectedPath))
+            {
+                textBoxRuta.Text = selectorRuta.SelectedPath;
+            }
         }
     }
 
