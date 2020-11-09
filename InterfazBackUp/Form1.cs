@@ -17,7 +17,7 @@ namespace InterfazBackUp
     {
         
 
-        String path = @"D:\Programas\";
+        String path = @"D:\";
         //String path = @"C:\Facturae-3.4";
         static ArrayList seleccionArchivosCopia = new ArrayList();
         static ArrayList seleccionPathsCopia = new ArrayList();
@@ -27,17 +27,6 @@ namespace InterfazBackUp
             //CrearTreeView();
             ListDirectory(treeView1, path);
 
-        }
-
-        public void CrearTreeView()
-        {
-            treeView1.Nodes.Clear();
-            treeView1.ImageList = imageList1;
-            treeView1.Nodes.Add("TreeView", "Personas", 0);
-            treeView1.Nodes[0].Nodes.Add("1", "Alejandro", 1);
-            treeView1.Nodes[0].Nodes.Add("1", "Lara", 1);
-            treeView1.Nodes[0].Nodes.Add("1", "Sofía", 1);
-            treeView1.Nodes[0].Nodes.Add("1", "Emma", 1);
         }
 
         private void buttonExpandir_Click(object sender, EventArgs e)
@@ -50,37 +39,43 @@ namespace InterfazBackUp
             treeView1.CollapseAll();
         }
 
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-
-        }
-
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             listViewSeleccion.SmallImageList = imageList1;
             if (treeView1.Nodes.Count != 0) {
-                
+
                 if (e.Node.Tag == "file")
                 {
-                    FileStream fileStream = File.Create(@"D:\" + e.Node.FullPath);
-                    FileStream fs = fileStream;
-                    seleccionArchivosCopia.Add(fs);
+                    try
+                    {
+                        FileStream fileStream = File.Create(e.Node.FullPath);
+                        FileStream fs = fileStream;
+                        seleccionArchivosCopia.Add(fs);
+
+                        String pathArchivo = e.Node.FullPath;
+                        seleccionPathsCopia.Add(pathArchivo);
+
+                        ListViewItem archivoAñadir = new ListViewItem(e.Node.Text);
+                        //e.Node.ImageIndex = 1;
+                        archivoAñadir.SubItems.Add(pathArchivo);
+                        listViewSeleccion.Items.Add(archivoAñadir);
+                        MessageBox.Show("Archivo " + e.Node.Text + " añadido con éxito");
+                    }
+                    catch (System.IO.IOException ex)
+                    {
+                        MessageBox.Show("El archivo " + e.Node.Text + " ya está en la lista. Pruebe con otro.");
+                        
+                    }
+                    catch (System.UnauthorizedAccessException ee)
+                    {
+                        MessageBox.Show("No tiene autorización para acceder al archivo " + e.Node.Text + ".");
+                    }
+
+                }
+                /*else {
+                    CreateDirectoryNodeSeleccion(e.Node.FullPath);
                     
-                    String pathArchivo = e.Node.FullPath;
-                    seleccionPathsCopia.Add(pathArchivo);
-
-                    ListViewItem archivoAñadir = new ListViewItem(e.Node.Text);
-                    //e.Node.ImageIndex = 1;
-                    archivoAñadir.SubItems.Add(@"D:\" + pathArchivo);
-                    listViewSeleccion.Items.Add(archivoAñadir);
-                    MessageBox.Show(e.Node.Text + "Añadido");
-
-                }
-                else {
-                    CreateDirectoryNodeSeleccion(@"D:\" + e.Node.FullPath);
-
-                }
-
+                }*/
             }
         }
 
@@ -95,49 +90,63 @@ namespace InterfazBackUp
         private static TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
         {
             var directoryNode = new TreeNode(directoryInfo.Name);
-            foreach (var directory in directoryInfo.GetDirectories())
-            {   
-                directoryNode.Tag = "dir";
-                directoryNode.ImageIndex = 0;
-                directoryNode.Nodes.Add(CreateDirectoryNode(directory));             
+            try
+            {
+                foreach (var directory in directoryInfo.GetDirectories())
+                {
+                    
+                    directoryNode.Tag = "dir";
+                    directoryNode.ImageIndex = 0;
+                    directoryNode.Nodes.Add(CreateDirectoryNode(directory));
+                }
+                foreach (var file in directoryInfo.GetFiles())
+                {
+                    TreeNode archivo = new TreeNode(file.Name);
+                    archivo.Tag = "file";
+                    archivo.ImageIndex = 1;
+                    directoryNode.Nodes.Add(archivo);
+                }
             }
-            foreach (var file in directoryInfo.GetFiles()) {
-                TreeNode archivo = new TreeNode(file.Name);
-                archivo.Tag = "file";
-                archivo.ImageIndex = 1;
-                directoryNode.Nodes.Add(archivo);
-            }
+            catch (System.UnauthorizedAccessException e) {
                 
+            }
             return directoryNode;
         }
 
 
-        private TreeNode CreateDirectoryNodeSeleccion(String path)
+        /*private TreeNode CreateDirectoryNodeSeleccion(String path)
         {
             var directoryInfo = new DirectoryInfo(path);
             listViewSeleccion.SmallImageList = imageList1;
             var directoryNode = new TreeNode(directoryInfo.Name);
-            foreach (var directory in directoryInfo.GetDirectories())
+            try
             {
-                directoryNode.Tag = "dir";
-                directoryNode.Nodes.Add(CreateDirectoryNodeSeleccion(directory.FullName));
+                foreach (var directory in directoryInfo.GetDirectories())
+                {
+                    //directoryNode.Tag = "dir";
+                    directoryNode.Nodes.Add(CreateDirectoryNodeSeleccion(directory.FullName));
+                }
+                foreach (var file in directoryInfo.GetFiles())
+                {
+                    FileStream fileStream = File.Create(file.DirectoryName);
+                    FileStream fs = fileStream;
+                    seleccionArchivosCopia.Add(fs);
+
+                    String pathArchivo = file.DirectoryName;
+                    seleccionPathsCopia.Add(pathArchivo);
+
+                    ListViewItem archivoAñadir = new ListViewItem(fs.Name);
+                    archivoAñadir.SubItems.Add(@"D:\" + pathArchivo);
+                    listViewSeleccion.Items.Add(archivoAñadir);
+                    //MessageBox.Show(e.Node.Text + "Añadido");
+                }
             }
-            foreach (var file in directoryInfo.GetFiles())
+            catch (System.UnauthorizedAccessException ee)
             {
-                FileStream fileStream = File.Create(file.DirectoryName);
-                FileStream fs = fileStream;
-                seleccionArchivosCopia.Add(fs);
-
-                String pathArchivo = file.DirectoryName;
-                seleccionPathsCopia.Add(pathArchivo);
-
-                ListViewItem archivoAñadir = new ListViewItem(fs.Name);
-                archivoAñadir.SubItems.Add(@"D:\" + pathArchivo);
-                listViewSeleccion.Items.Add(archivoAñadir);
-                //MessageBox.Show(e.Node.Text + "Añadido");
+                
             }
             return directoryNode;
-        }
+        }*/
 
         private void button1_Click(object sender, EventArgs e)
         {
